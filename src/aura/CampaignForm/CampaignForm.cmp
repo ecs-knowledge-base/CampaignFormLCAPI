@@ -1,0 +1,70 @@
+<aura:component controller="CampaignFormController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+    access="global">
+
+    <!-- Field definition set -->
+    <aura:attribute name="name" type="String" />
+    <aura:attribute name="owner" type="Id" />
+    <aura:attribute name="parent" type="Id" />
+    <aura:attribute name="status" type="String[]" default=" , In Progress, Completed, Aborted, Planned" />
+    <aura:attribute name="type" type="String[]" default=" , Advertisement, Email, Telemarketing, Banner Ads, Seminar / Conference, Public Relations, Partners, Referral Program, Other"
+    />
+    <aura:attribute name="startDate" type="Date" />
+    <aura:attribute name="endDate" type="Date" />
+
+    <!-- Form heading -->
+    <aura:attribute name="formHeading" type="String" default="New Campaign" />
+    <!-- sObject to save form -->
+    <aura:attribute name="campaignForm" type="Campaign" default="{'sobjectType': 'Campaign'}" />
+    <!-- Boolean variable in order to check if the Submit Button has been clicked -->
+    <aura:attribute name="isDataSubmitted" type="Boolean" default="False" />
+    <!-- Save the record Id when the new Campaign is created -->
+    <aura:attribute name="campaignRecordId" type="String" />
+
+    <!-- Call the toast message if required
+    <c:toast /> -->
+
+    <!-- Lightning Design System Class is used in order to set the design of the text elements -->
+    <div class="slds-m-top_large">
+        <div class="slds-page-header">
+            <div class="slds-text-heading_medium">
+                <div class="slds-align_absolute-center" style="height: 5rem;">
+                    {!v.formHeading}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+
+    <div class="slds-align_absolute-center">
+        <div class="slds-size_3-of-8">
+            <!-- lightning:input is a beta version component, so it should be replaced for ui:inputText if an error is returned
+                <ui:inputText label="Enter the Campaign Name" value="{!v.campaignForm.Name}" required="true"/>-->
+            <lightning:input label="Enter the Campaign Name" name="name" value="{!v.campaignForm.Name}" required="true" />
+            <br/>
+            <!-- You can use aura:iteration to iterate over a list of items to generate options -->
+            <lightning:select name="status" label="Choose the Campaign Status" required="true" messageWhenValueMissing="Did you forget to select a status?"
+                value="{!v.campaignForm.Status}">
+                <aura:iteration items="{!v.status}" var="status">
+                    <option value="{!status}" text="{!status}" />
+                </aura:iteration>
+            </lightning:select>
+            <br/>
+            <lightning:select name="status" label="Choose the Campaign Type" required="true" messageWhenValueMissing="Did you forget to select a type?"
+                value="{!v.campaignForm.Type}">
+                <aura:iteration items="{!v.type}" var="type">
+                    <option value="{!type}" text="{!type}" />
+                </aura:iteration>
+            </lightning:select>
+            <br/>
+            <lightning:input type="date" label="Start Date" name="startDate" value="{!v.campaignForm.StartDate}" />
+            <br/>
+            <lightning:input type="date" label="End Date" name="endDate" value="{!v.campaignForm.EndDate}" />
+            <br/>
+            <lightning:button variant="brand" label="Submit" onclick="{!c.doSubmit}"> </lightning:button>
+        </div>
+    </div>
+
+
+</aura:component>
